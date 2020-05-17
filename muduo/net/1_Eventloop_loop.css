@@ -1,0 +1,30 @@
+@startuml
+
+/'
+ ' @brief event loop 
+ ' @author fjiang2
+ ' @date 2020.5.16
+ '/
+
+
+participant EventLoop
+participant Poller
+participant PollPoller
+participant Channel
+
+
+[->EventLoop: loop
+EventLoop->Poller: loop
+Poller->PollPoller: loop
+PollPoller->PollPoller: fillActiveChannels
+PollPoller->Channel: set_revents
+PollPoller->PollPoller: activeChannels.push_back
+|||
+EventLoop->Channel: handleEvent
+Channel->Channel: handleEventWithGuard
+Channel->]: user callback
+EventLoop->EventLoop: doPendingFunctors
+note right: ?
+
+
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+
+/'
+ ' @brief EventLoop call enableReading interface.
+ ' @author fjiang2
+ ' @date 2020.5.17
+ '/
+
+participant EventLoop
+participant Poller
+participant PollPoller
+participant Channel
+
+
+EventLoop->Channel: enableReading
+activate Channel
+Channel->Channel: update
+EventLoop<-Channel: updateChannel
+deactivate Channel
+EventLoop->Poller: updateChannel
+Poller->PollPoller: updateChannel
+PollPoller->Channel: fd
+PollPoller->Channel: events
+PollPoller->PollPoller: update pollfds_
+PollPoller->Channel: set_index
+PollPoller->PollPoller: update channels_
+
+
+@enduml

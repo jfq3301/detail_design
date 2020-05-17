@@ -1,0 +1,37 @@
+@startuml
+
+/'
+ ' @brief event loop constructor
+ ' @author fjiang2
+ ' @date 2020.5.5
+ '/
+
+participant EventLoop
+participant CurrentThread
+participant Poller
+participant PollPoller
+participant TimerQueue
+participant Channel
+
+
+EventLoop->CurrentThread: tid
+EventLoop->Poller: constructor
+EventLoop->TimerQueue: constructor
+EventLoop->EventLoop: createEventfd
+note right: ::eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
+EventLoop->Channel: constructor
+EventLoop->Channel: setReadCallback
+
+EventLoop->Channel: enableReading
+activate Channel
+Channel->Channel: update
+EventLoop<-Channel: updateChannel
+deactivate Channel
+EventLoop->Poller: updateChannel
+Poller->PollPoller: updateChannel
+PollPoller->Channel: fd
+PollPoller->Channel: events
+PollPoller->PollPoller: update pollfds_
+PollPoller->Channel: set_index
+PollPoller->PollPoller: update channels_
+@enduml

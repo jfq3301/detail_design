@@ -1,0 +1,41 @@
+@startuml
+
+/'
+ ' @brief tcp server constructor.
+ ' @author fjiang2
+ ' @date 2020.5.3
+ '/
+
+participant ThreadPool_test
+participant ThreadPool
+participant Thread
+participant Task
+participant deque
+
+
+ThreadPool_test->ThreadPool: constructor
+ThreadPool->ThreadPool: maxQueueSize_ = 0
+ThreadPool_test->ThreadPool: setMaxQueueSize
+ThreadPool_test->ThreadPool: start(5)
+note right: start 5 threads
+ThreadPool->Thread: constructor
+ThreadPool->Thread: start
+ThreadPool<-Thread: runInThread
+ThreadPool->ThreadPool: take
+ThreadPool->deque: pop_front()
+note right: dequeue
+note right: thread is waiting task
+ThreadPool->Task: constructor
+note left: task is a callback function.
+ThreadPool->Task: Task()
+
+|||
+ThreadPool_test->ThreadPool: run
+ThreadPool->deque: push_back
+note right: enqueue
+
+
+
+
+
+@enduml

@@ -1,0 +1,45 @@
+@startuml
+
+/'
+ ' @brief EventLoop runAfter interface.
+ ' @author fjiang2
+ ' @date 2020.5.17
+ '/
+
+participant EventLoop
+'participant Poller
+'participant PollPoller
+'participant Channel
+participant TimerQueue
+participant Timer
+participant TimerId
+participant Timestamp
+
+[->EventLoop: runAfter
+EventLoop->Timestamp: now
+EventLoop->Timestamp: constructor
+EventLoop->EventLoop: runAt
+EventLoop->TimerQueue: addTimer
+TimerQueue->Timer: new Timer
+EventLoop<-TimerQueue: runInLoop
+note right: ?
+EventLoop->TimerQueue: addTimerInLoop
+activate TimerQueue
+EventLoop<-TimerQueue: assertInLoopThread
+TimerQueue->TimerQueue: insert
+activate TimerQueue
+TimerQueue->Timer: expiration
+TimerQueue->TimerQueue: set.insert
+TimerQueue->TimerQueue: set.insert
+deactivate TimerQueue
+deactivate TimerQueue
+alt earliestChanged true
+TimerQueue->TimerQueue: resetTimerfd
+note right: ?
+end alt
+
+TimerQueue->TimerId: TimerId(timer, timer->sequence())
+EventLoop<--TimerQueue: return TimerId
+
+
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+
+/'
+ ' @brief tcp server constructor.
+ ' @author fjiang2
+ ' @date 2020.5.3
+ '/
+
+participant EchoServer
+participant TcpServer
+participant Acceptor
+participant EventLoopThreadPool
+participant TcpConnection
+'participant EventLoop
+participant Socket
+participant Channel
+
+
+/'
+'int main()
+'{
+'  LOG_INFO << "pid = " << getpid();
+'  muduo::net::EventLoop loop;
+'  muduo::net::InetAddress listenAddr(2007);
+'  EchoServer server(&loop, listenAddr);
+'  server.start();
+'  loop.loop();
+'}
+'/
+
+EchoServer->EchoServer: constructor
+EchoServer->TcpServer: TcpServer constructor
+TcpServer->Acceptor: Acceptor constructor
+Acceptor->Socket: Socket constructor
+Acceptor->Channel: Channel constructor
+Acceptor->Socket: bindAddress
+Acceptor->Channel: setReadCallback
+TcpServer->EventLoopThreadPool: EventLoopThreadPool constructor
+TcpServer->Acceptor: setNewConnectionCallback
+
+
+
+
+@enduml

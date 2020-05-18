@@ -1,1 +1,1 @@
-"# detail_design" 
+"# plantuml sequences." 

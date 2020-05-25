@@ -1,0 +1,22 @@
+@startuml
+
+/'
+ ' :brief: commonapi helloworld client main process
+ ' :author: jfq3301@163.com
+ ' :date: 2020.3.6
+ '/
+
+participant HelloWorldClient
+participant Runtime
+'Z:\xxx\capicxx-core-runtime\src\CommonAPI
+participant HelloWorldProxy
+
+HelloWorldClient->Runtime: get
+note right: generate runtime
+Runtime->Runtime: init
+HelloWorldClient->Runtime: buildProxy
+HelloWorldClient->HelloWorldProxy: isAvailable
+HelloWorldClient->HelloWorldProxy: sayHello
+
+
+@enduml

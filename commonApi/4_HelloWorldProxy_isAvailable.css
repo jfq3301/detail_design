@@ -1,0 +1,29 @@
+@startuml
+
+/'
+ ' :brief: commonapi runtime api isAvailable.
+ ' :author: jfq3301@163.com
+ ' :date: 2020.3.13
+ '/
+
+participant HelloWorldClient
+participant HelloWorldSomeIPProxy
+participant Proxy
+participant ProxyConnection
+participant Connection
+
+
+note over Proxy
+CommonAPI::SomeIP::Proxy
+CommonAPI::SomeIP::ProxyConnection
+CommonAPI::SomeIP::Connection
+end note
+
+HelloWorldClient->HelloWorldSomeIPProxy: isAvailable
+HelloWorldSomeIPProxy->Proxy: isAvailable
+Proxy->ProxyConnection: isConnected
+ProxyConnection->Connection: isConnected
+Proxy->Proxy: vailabilityStatus_ == AVAILABLE
+
+
+@enduml

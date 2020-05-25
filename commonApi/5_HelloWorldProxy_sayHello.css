@@ -1,0 +1,26 @@
+@startuml
+
+/'
+ ' :brief: sayHello method.
+ ' :author: jfq3301@163.com
+ ' :date: 2020.3.13
+ '/
+
+participant HelloWorldClient
+participant HelloWorldSomeIPProxy
+participant ProxyHelper
+participant ProxyConnection
+participant Connection
+
+
+note over ProxyConnection
+CommonAPI::SomeIP::ProxyConnection
+CommonAPI::SomeIP::Connection
+end note
+
+HelloWorldClient->HelloWorldSomeIPProxy: sayHello
+HelloWorldSomeIPProxy->ProxyHelper: callMethodWithReply
+ProxyHelper->ProxyConnection: sendMessageWithReplyAndBlock
+ProxyConnection->Connection: sendMessageWithReplyAndBlock
+
+@enduml

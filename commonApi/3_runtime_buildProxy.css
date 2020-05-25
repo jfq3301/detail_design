@@ -1,0 +1,80 @@
+@startuml
+
+/'
+ ' :brief: commonapi runtime api buildProxy.
+ ' :author: jfq3301@163.com
+ ' :date: 2020.3.10
+ '/
+
+participant HelloWorldClient
+participant HelloWorldSomeIPProxy
+participant Runtime
+participant Factory
+participant Proxy
+participant Connection
+
+
+'CommonAPI::Address address(_address);
+'_address = "local:commonapi.HelloWorld:test"
+'std::string domain_ = "local"
+'std::string interface_ = "commonapi.HelloWorld"
+'std::string instance_ = "test"
+
+'Address someipAddress(_service, _instance, _major, _minor);
+'_service = 0x1234
+'_instance = 0x5678
+'_major = 1
+'_minor = 0
+
+
+note over Proxy
+CommonAPI::SomeIP::Proxy
+end note
+note over Factory
+CommonAPI::SomeIP::Factory
+end note
+HelloWorldClient->Runtime: buildProxy<>
+note right: HelloWorldProxy
+Runtime->Runtime: createProxy
+note right: create delegate
+Runtime->Runtime: createProxyHelper
+note over Runtime
+Factory.cpp
+#define INITIALIZER(f) \
+    static void f(void) __attribute__((constructor)); \
+    static void f(void)
+__attribute__((constructor)), init before main function
+INITIALIZER(FactoryInit) {
+    Runtime::get()->registerFactory("someip", Factory::get());
+}
+end note
+Runtime->Factory: createProxy
+
+
+note over Runtime
+INITIALIZER(registerHelloWorldSomeIPProxy) {
+     CommonAPI::SomeIP::Factory::get()->registerProxyCreateMethod(
+         HelloWorld::getInterface(),
+         &createHelloWorldSomeIPProxy);
+}
+end note
+
+Factory->Factory: getConnection
+alt not found
+'class Connection:
+'    public ProxyConnection,
+'    public std::enable_shared_from_this<Connection> 
+Factory->Connection: make_shared<Connection>
+Factory->Connection: connect
+end alt       
+HelloWorldSomeIPProxy<-Factory: createHelloWorldSomeIPProxy
+HelloWorldSomeIPProxy<-Factory: init
+HelloWorldSomeIPProxy->Proxy: init
+Proxy->Connection: registerAvailabilityHandler
+Runtime<--Factory: HelloWorldSomeIPProxy
+
+HelloWorldClient<--Runtime: make_shared<HelloWorldProxy>()
+note right: parameter HelloWorldProxyBase delegate
+
+
+@enduml

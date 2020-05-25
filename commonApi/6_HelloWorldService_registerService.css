@@ -1,0 +1,38 @@
+@startuml
+
+/'
+ ' :brief: registerService
+ ' :author: jfq3301@163.com
+ ' :date: 2020.3.13
+ '/
+
+participant HelloWorldService
+participant Runtime
+'CommonAPI::Runtime
+participant Factory
+' CommonAPI::SomeIP::Factory
+participant HelloWorldSomeIPStubAdapter
+
+HelloWorldService->Runtime: registerService
+Runtime->Runtime: registerStub
+Runtime->Runtime: registerStubHelper
+Runtime->Factory: registerStub
+
+note over Runtime
+HelloWorldSomeIPStubAdapter.cpp
+INITIALIZER(registerHelloWorldSomeIPStubAdapter) {
+    CommonAPI::SomeIP::Factory::get()->registerStubAdapterCreateMethod(
+        HelloWorld::getInterface(), 
+        &createHelloWorldSomeIPStubAdapter);
+}
+end note
+Factory->HelloWorldSomeIPStubAdapter: createHelloWorldSomeIPStubAdapter
+
+'
+'
+' HelloWorldStubImpl
+
+
+
+
+@enduml

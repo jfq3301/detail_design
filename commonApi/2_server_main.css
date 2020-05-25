@@ -1,0 +1,21 @@
+@startuml
+
+/'
+ ' :brief: commonapi helloworld server main process
+ ' :author: jfq3301@163.com
+ ' :date: 2020.3.6
+ '/
+
+participant HelloWorldServer
+participant Runtime
+'Z:\xxx\capicxx-core-runtime\src\CommonAPI
+participant HelloWorldStubImpl
+
+HelloWorldServer->Runtime: get
+note right: generate runtime
+Runtime->Runtime: init
+HelloWorldServer->HelloWorldStubImpl: std::make_shared<HelloWorldStubImpl>()
+HelloWorldServer->Runtime: registerService
+
+
+@enduml

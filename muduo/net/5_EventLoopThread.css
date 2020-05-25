@@ -1,0 +1,28 @@
+@startuml
+
+/'
+ ' @brief event loop thread constructor.
+ '      EventLoopThread contains one thread.
+ ' @author fjiang2
+ ' @date 2020.5.21
+ '/
+
+participant EventLoopThread_test
+participant EventLoopThread
+participant EventLoop
+participant Thread
+
+
+EventLoopThread_test->EventLoopThread: new
+EventLoopThread->Thread: new
+|||
+EventLoopThread_test->EventLoopThread: startLoop
+EventLoopThread->Thread: start
+EventLoopThread<-Thread: threadFunc
+EventLoopThread->EventLoop: new
+EventLoopThread_test<-EventLoopThread: wakeup
+EventLoopThread->EventLoop: loop
+
+EventLoopThread_test->EventLoop: runInLoop
+
+@enduml

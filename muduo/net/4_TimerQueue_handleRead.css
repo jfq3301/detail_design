@@ -23,12 +23,23 @@ Poller->PollPoller: loop
 PollPoller->PollPoller: fillActiveChannels
 PollPoller->Channel: set_revents
 PollPoller->PollPoller: activeChannels.push_back
+Poller<--PollPoller: return
+EventLoop<--Poller: return
 |||
 EventLoop->Channel: handleEvent
 Channel->Channel: handleEventWithGuard
-Channel->]: user callback
-EventLoop->EventLoop: doPendingFunctors
+Channel->TimerQueue: handleRead
+note left: user callback
+activate TimerQueue
+TimerQueue->Timestamp: now
+TimerQueue->TimerQueue: readTimerfd
+TimerQueue->TimerQueue: getExpired
 note right: ?
+loop
+TimerQueue->Timer: run
+[<-Timer: user callback
+end loop
+TimerQueue->TimerQueue: reset
 
 
 @enduml

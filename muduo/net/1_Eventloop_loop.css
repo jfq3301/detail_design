@@ -19,6 +19,8 @@ Poller->PollPoller: loop
 PollPoller->PollPoller: fillActiveChannels
 PollPoller->Channel: set_revents
 PollPoller->PollPoller: activeChannels.push_back
+Poller<--PollPoller: return
+EventLoop<--Poller: return
 |||
 EventLoop->Channel: handleEvent
 Channel->Channel: handleEventWithGuard

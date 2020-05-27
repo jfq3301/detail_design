@@ -16,8 +16,19 @@ participant Thread
 
 EventLoopThreadPool_test->EventLoop: new
 EventLoopThreadPool_test->EventLoopThreadPool: new
-EventLoopThreadPool->EventLoop: baseLoop
-
+EventLoopThreadPool->EventLoop: param baseLoop
+EventLoopThreadPool_test->EventLoopThreadPool: setThreadNum
+EventLoopThreadPool_test->EventLoopThreadPool: start
+EventLoopThreadPool->EventLoop: assertInLoopThread
+EventLoopThreadPool->EventLoopThread: new
+EventLoopThread->EventLoopThread: startLoop
+EventLoopThread->Thread: start
+EventLoopThreadPool_test->EventLoopThreadPool: getNextLoop
+alt
+EventLoopThreadPool_test->EventLoop: runAfter
+else
+EventLoopThreadPool_test->EventLoop: runInLoop
+end alt
 
 
 @enduml

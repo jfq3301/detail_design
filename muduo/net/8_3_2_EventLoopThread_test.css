@@ -18,11 +18,16 @@ EventLoopThread->Thread: new
 |||
 EventLoopThread_test->EventLoopThread: startLoop
 EventLoopThread->Thread: start
+activate Thread
 EventLoopThread<-Thread: threadFunc
 EventLoopThread->EventLoop: new
-EventLoopThread_test<-EventLoopThread: wakeup
+EventLoopThread->EventLoopThread: wakeup
+EventLoopThread_test<--EventLoopThread: return
 EventLoopThread->EventLoop: loop
+deactivate Thread
 
 EventLoopThread_test->EventLoop: runInLoop
+EventLoop->EventLoop: wakeup
+EventLoopThread_test<-EventLoop: print
 
 @enduml

@@ -31,7 +31,10 @@ TcpServer->TcpConnection: make_shared
 TcpServer->EventLoopThreadPool: getNextLoop
 TcpServer->EventLoopThreadPool: runInLoop
 TcpConnection<-EventLoopThreadPool: connectEstablished
-
+Channel<-TcpConnection: tie
+Channel<-TcpConnection: enableReading
+TcpServer<-TcpConnection: connectionCallback_
+TcpServer->]: connectionCallback_
 
 
 @enduml

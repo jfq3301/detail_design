@@ -1,0 +1,35 @@
+@startuml
+
+/'
+ ' @brief TcpConnection::handleClose
+ ' @author fjiang2
+ ' @date 2020.5.27
+ '/
+
+' Channel readCallback:
+'  1. TimerQueue, timefd
+'  2. EventLoop, eventfd
+'  3. TcpServer/ Acceptor, listening socket
+'  4. TcpConnection, normal TCP socket
+'
+
+
+participant EventLoop
+participant Channel
+participant TcpConnection
+participant TcpServer
+'participant EventLoopThreadPool
+
+
+EventLoop->Channel: handleEvent
+Channel->Channel: handleEventWithGuard
+Channel->TcpConnection: handleRead
+TcpConnection->TcpConnection: handleClose
+TcpConnection->TcpServer: removeConnection
+note left: closeCallback_
+TcpServer->TcpServer: removeConnectionInLoop
+EventLoop<-TcpServer: queueInLoop
+note left: which loop?
+EventLoop->TcpConnection: connectDestroyed
+
+@enduml

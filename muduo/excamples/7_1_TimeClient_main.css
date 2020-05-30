@@ -1,0 +1,41 @@
+@startuml
+
+/'
+ ' @brief TcpServer::newConnection
+ ' @author jfq3301@163.com
+ ' @date 2020.5.24
+ '/
+
+' Channel readCallback:
+'  1. TimerQueue, timefd
+'  2. EventLoop, eventfd
+'  3. TcpServer/ Acceptor, listening socket
+'  4. TcpConnection, normal TCP socket
+'
+
+
+participant main
+participant EventLoop
+participant InetAddress
+participant TimeClient
+participant TcpClient
+participant Connector
+
+
+main->EventLoop: new
+main->InetAddress: new
+main->TimeClient: new
+EventLoop<-TimeClient: param loop
+InetAddress<-TimeClient: param serverAddr
+TimeClient->TcpClient: new
+TcpClient->Connector: new
+TimeClient->TcpClient: setConnectionCallback
+TimeClient->TcpClient: setMessageCallback
+main->TimeClient: connect
+TimeClient->TcpClient: connect
+TcpClient->Connector: start
+main->EventLoop: loop
+
+
+
+@enduml

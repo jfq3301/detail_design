@@ -1,0 +1,35 @@
+@startuml
+
+/'
+ ' @brief fdbus CBaseWorker sendSync.
+ ' @author jfq3301@163.com
+ ' @date 2020.6.2
+ '/
+
+actor job_test
+participant CBaseWorker
+participant CBaseThread
+
+participant CThreadEventLoop
+participant CBaseEventLoop
+participant CJobQueue
+participant CBaseJob
+participant CSyncRequest
+
+
+note over CSyncRequest
+CSyncRequest is inner class of CBaseJob
+end note
+job_test->CBaseWorker: sendSync
+CBaseWorker->CBaseJob: param job
+CBaseWorker->CSyncRequest: new
+CSyncRequest->CSyncRequest: send
+CSyncRequest->CJobQueue: enqueue
+CJobQueue->CJobQueue: vector.push_back
+CThreadEventLoop<-CJobQueue: notify
+
+
+
+
+
+@enduml

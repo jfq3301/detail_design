@@ -1,0 +1,48 @@
+@startuml
+
+/'
+ ' @brief fdbus job test.
+ ' @author jfq3301@163.com
+ ' @date 2020.6.2
+ '/
+
+participant job_test
+participant CFdbContext
+participant CBaseWorker_sender
+participant CBaseWorker_receiver
+participant CBaseThread
+participant CSenderTimer
+participant CBaseLoopTimer
+participant CThreadEventLoop
+
+
+job_test->CBaseWorker_sender: global variable
+job_test->CBaseWorker_receiver: global variable
+job_test->CFdbContext: getInstance
+job_test->CFdbContext: start
+job_test->CBaseWorker_sender: start
+note right: FDB_WORKER_DEFAULT 0
+activate CBaseWorker_sender
+CBaseWorker_sender->CBaseThread: started()
+CBaseWorker_sender->CBaseWorker_sender: init
+activate CBaseWorker_sender
+CBaseWorker_sender->CThreadEventLoop: new
+CBaseWorker_sender->CThreadEventLoop: init
+CBaseWorker_sender<-CThreadEventLoop: param worker
+deactivate CBaseWorker_sender
+CBaseWorker_sender->CBaseThread: start
+deactivate CBaseWorker_sender
+CBaseWorker_sender<-CBaseThread: run
+
+job_test->CBaseWorker_receiver: start
+job_test->CSenderTimer: new
+CBaseWorker_receiver<-CSenderTimer: param receiver
+job_test->CBaseLoopTimer: attach
+CBaseWorker_sender<-CBaseLoopTimer: param worker
+
+
+
+
+
+
+@enduml

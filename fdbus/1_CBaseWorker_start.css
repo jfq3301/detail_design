@@ -1,0 +1,50 @@
+@startuml
+
+/'
+ ' @brief fdbus job test.
+ ' @author jfq3301@163.com
+ ' @date 2020.6.2
+ '/
+
+participant job_test
+participant CBaseWorker
+participant CBaseThread
+participant CThreadEventLoop
+participant CBaseEventLoop
+participant CJobQueue
+participant CBaseJob
+
+
+
+job_test->CBaseWorker: new
+CBaseWorker->CBaseThread: constructor
+CBaseWorker->CJobQueue: new
+CJobQueue->CBaseJob: new
+note over CBaseWorker
+CBaseWorker is sub class of CBaseThread
+end note
+job_test->CBaseWorker: start
+note right: FDB_WORKER_DEFAULT 0
+activate CBaseWorker
+CBaseWorker->CBaseThread: started()
+CBaseWorker->CBaseWorker: init
+activate CBaseWorker
+CBaseWorker->CThreadEventLoop: new
+CBaseWorker->CThreadEventLoop: init
+CBaseWorker<-CThreadEventLoop: param worker
+deactivate CBaseWorker
+CBaseWorker->CBaseThread: start
+deactivate CBaseWorker
+
+|||
+CBaseWorker<-CBaseThread: run
+activate CBaseWorker
+CBaseWorker->CThreadEventLoop: dispatch
+CThreadEventLoop->CBaseEventLoop: getMostRecentTime
+CBaseWorker<-CThreadEventLoop: jobQueued
+CBaseWorker<-CThreadEventLoop: processJobQueue
+CThreadEventLoop->CBaseEventLoop: processTimers
+deactivate CBaseWorker
+
+
+@enduml

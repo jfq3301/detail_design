@@ -31,5 +31,6 @@ TcpServer->TcpServer: removeConnectionInLoop
 EventLoop<-TcpServer: queueInLoop
 note left: which loop?
 EventLoop->TcpConnection: connectDestroyed
+note right: when destructor?
 
 @enduml

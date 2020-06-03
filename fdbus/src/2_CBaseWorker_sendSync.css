@@ -22,12 +22,10 @@ CSyncRequest is inner class of CBaseJob
 end note
 
 job_test->CBaseWorker: sendSync
-activate CBaseWorker
 CBaseWorker->CBaseJob: param job
 CBaseWorker->CSyncRequest: new
-CBaseWorker->CBaseWorker: send
-activate CBaseWorker
-CBaseWorker->CJobQueue: enqueue
+CSyncRequest->CSyncRequest: send
+CSyncRequest->CJobQueue: enqueue
 CJobQueue->CJobQueue: vector.push_back
 CThreadEventLoop<-CJobQueue: notify
 CThreadEventLoop->CThreadEventLoop: notify_one
@@ -36,11 +34,9 @@ note over CThreadEventLoop
 1. user thread wake up CBaseWorker thread to do jobs
 2. jobs will wakeup sendSync call(user thread)
 end note
-deactivate CBaseWorker
 
 CBaseWorker->CSyncRequest: mSem.wait
 job_test<--CBaseWorker: return
-deactivate CBaseWorker
 
 
 @enduml

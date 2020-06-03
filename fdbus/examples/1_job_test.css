@@ -6,7 +6,7 @@
  ' @date 2020.6.2
  '/
 
-participant job_test
+actor job_test
 participant CFdbContext
 participant CBaseWorker_sender
 participant CBaseWorker_receiver
@@ -33,6 +33,7 @@ deactivate CBaseWorker_sender
 CBaseWorker_sender->CBaseThread: start
 deactivate CBaseWorker_sender
 CBaseWorker_sender<-CBaseThread: run
+CBaseWorker_sender->CThreadEventLoop: dispatch
 
 job_test->CBaseWorker_receiver: start
 job_test->CSenderTimer: new

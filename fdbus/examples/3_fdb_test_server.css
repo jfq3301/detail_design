@@ -1,0 +1,22 @@
+@startuml
+
+/'
+ ' @brief fdbus client test.
+ ' @author jfq3301@163.com
+ ' @date 2020.6.3
+ '/
+
+actor fdb_test_client
+participant CMediaServer
+participant CFdbContext
+participant CBaseWorker
+
+
+fdb_test_client->CFdbContext: start
+fdb_test_client->CBaseWorker: start
+note right: main_worker
+fdb_test_client->CMediaServer: new
+fdb_test_client->CMediaServer: bind
+
+
+@enduml

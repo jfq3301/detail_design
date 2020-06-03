@@ -1,0 +1,24 @@
+@startuml
+
+/'
+ ' @brief fdbus CBaseLoopTimer::attach
+ ' @author jfq3301@163.com
+ ' @date 2020.6.3
+ '/
+
+actor CBaseWorker
+participant CBaseEventLoop
+participant CBaseLoopTimer
+'participant CSysLoopTimer
+'participant CAttachTimerJob
+
+CBaseWorker->CBaseEventLoop: addTimer
+activate CBaseEventLoop
+CBaseEventLoop->CBaseLoopTimer: eventloop
+CBaseEventLoop->CBaseEventLoop: push_back
+CBaseEventLoop->CBaseLoopTimer: enable
+CBaseEventLoop<-CBaseLoopTimer: mTimerWorkingList.insert
+CBaseWorker<--CBaseEventLoop: return
+deactivate CBaseEventLoop
+
+@enduml

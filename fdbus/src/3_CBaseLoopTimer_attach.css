@@ -1,0 +1,53 @@
+@startuml
+
+/'
+ ' @brief fdbus CBaseLoopTimer::attach
+ ' @author jfq3301@163.com
+ ' @date 2020.6.3
+ '/
+
+actor job_test
+participant CBaseWorker
+participant CThreadEventLoop
+participant CBaseEventLoop
+participant CSenderTimer
+participant CBaseLoopTimer
+participant CSysLoopTimer
+participant CAttachTimerJob
+
+
+
+job_test->CSenderTimer: new
+activate CSenderTimer
+CSenderTimer->CBaseWorker: param receiver
+CSenderTimer->CBaseLoopTimer: new
+CBaseLoopTimer->CSysLoopTimer: new
+job_test<--CSenderTimer: return
+deactivate CSenderTimer
+
+job_test->CBaseLoopTimer: attach
+CBaseLoopTimer->CBaseWorker: param worker
+CBaseLoopTimer->CBaseWorker: isSelf
+alt same
+CBaseLoopTimer->CBaseWorker: getLoop
+CBaseLoopTimer->CBaseEventLoop: addTimer
+activate CBaseLoopTimer
+CBaseLoopTimer<-CBaseEventLoop: eventloop
+CBaseLoopTimer<-CBaseEventLoop: enable
+deactivate CBaseLoopTimer
+else 
+CBaseLoopTimer->CAttachTimerJob: new
+CBaseLoopTimer->CBaseWorker: sendSync
+
+end alt
+
+'participant CBaseThread
+
+'participant CJobQueue
+'participant CBaseJob
+'participant CSyncRequest
+
+
+
+
+@enduml

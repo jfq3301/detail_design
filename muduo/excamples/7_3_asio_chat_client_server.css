@@ -1,0 +1,28 @@
+@startuml
+
+/'
+ ' @brief chat client and server.
+ ' @author jfq3301@163.com
+ ' @date 2020.6.9
+ '/
+
+participant ChatClient
+participant LengthHeaderCodec
+participant TcpConnection
+participant LengthHeaderCodec1
+participant ChatServer
+
+ChatClient->LengthHeaderCodec: write
+LengthHeaderCodec->TcpConnection: send
+TcpConnection->LengthHeaderCodec1: onMessage
+LengthHeaderCodec1->ChatServer: onStringMessage
+
+loop conections
+LengthHeaderCodec1<-ChatServer: send
+TcpConnection<-LengthHeaderCodec1: send
+LengthHeaderCodec<-TcpConnection: onMessage
+ChatClient<-LengthHeaderCodec: onStringMessage
+end loop
+
+@enduml
+

@@ -13,6 +13,7 @@ participant CBaseWorker
 
 
 fdb_test_client->CFdbContext: start
+CFdbContext->CBaseWorker: start
 fdb_test_client->CBaseWorker: start
 note right: main_worker
 fdb_test_client->CMediaServer: new
@@ -20,3 +21,5 @@ fdb_test_client->CMediaServer: bind
 
 
 @enduml
+
+

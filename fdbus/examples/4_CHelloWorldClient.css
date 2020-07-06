@@ -1,0 +1,33 @@
+@startuml
+
+/'
+ ' @brief fdbus client detail
+ ' @author jfq3301@163.com
+ ' @date 2020.6.15
+ '/
+
+actor main
+participant CHelloWorldClient
+participant CBaseClient
+participant CBaseEndpoint
+participant CFdbBaseObject
+participant CBaseWorker
+
+
+main->CHelloWorldClient: new
+CHelloWorldClient->CBaseClient: new
+CBaseClient->CBaseEndpoint: new
+CBaseEndpoint->CFdbBaseObject: new
+CFdbBaseObject->CBaseWorker: param worker
+main->CFdbBaseObject: enableReconnect
+main->CBaseClient: connect
+CBaseClient->CBaseWorker: sendSyncEndeavor
+note left: CFdbContext
+CBaseClient<-CBaseWorker: cbConnect
+CBaseClient->CBaseClient: doConnect
+
+
+
+@enduml
+
+

@@ -11,6 +11,7 @@ participant CHelloWorldClient
 participant CBaseClient
 participant CBaseEndpoint
 participant CFdbBaseObject
+participant CFdbContext
 participant CBaseWorker
 
 
@@ -21,12 +22,12 @@ CBaseEndpoint->CFdbBaseObject: new
 CFdbBaseObject->CBaseWorker: param worker
 main->CFdbBaseObject: enableReconnect
 main->CBaseClient: connect
-CBaseClient->CBaseWorker: sendSyncEndeavor
+CBaseClient->CFdbContext: sendSyncEndeavor
 note left: CFdbContext
-CBaseClient<-CBaseWorker: cbConnect
+CBaseClient<-CFdbContext: cbConnect
 CBaseClient->CBaseClient: doConnect
-
-
+CBaseClient->CBaseEndpoint: requestServiceAddress
+CBaseEndpoint->CFdbContext: getNameProxy
 
 @enduml
 

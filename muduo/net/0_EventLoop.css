@@ -22,6 +22,7 @@ note right: ::eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
 EventLoop->Channel: constructor
 EventLoop->Channel: setReadCallback
 
+
 EventLoop->Channel: enableReading
 activate Channel
 Channel->Channel: update

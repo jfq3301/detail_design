@@ -11,12 +11,20 @@ participant CBaseClient
 participant CBaseEndpoint
 participant CFdbBaseObject
 participant CFdbMessage
+participant CFdbContext
+
 
 client->CFdbBaseObject: invoke
+note right: invoke[1]
+CFdbBaseObject->CFdbMessage: serialize
+note left: typedef CFdbMessage CBaseMessage
 CFdbBaseObject->CFdbMessage: invoke
 CFdbMessage->CFdbMessage: submit
-/*CFdbMessage*/
-
+alt sync
+CFdbMessage->CFdbContext: sendSync
+else
+CFdbMessage->CFdbContext: sendAsync
+end alt
 
 
 @enduml

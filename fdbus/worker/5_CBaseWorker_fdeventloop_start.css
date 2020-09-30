@@ -1,0 +1,48 @@
+@startuml
+
+/'
+ ' @brief fdbus job test.
+ ' @author jfq3301@163.com
+ ' @date 2020.6.2
+ '/
+
+participant CBaseWorker
+participant CBaseThread
+participant CFdEventLoop
+participant CBaseEventLoop
+participant CEventFd
+participant CNotifyFdWatch
+
+[->CBaseWorker: start
+note right: FDB_WORKER_DEFAULT 0
+activate CBaseWorker
+CBaseWorker->CBaseThread: started()
+CBaseWorker->CBaseWorker: init
+activate CBaseWorker
+CBaseWorker->CFdEventLoop: new
+CBaseWorker->CFdEventLoop: init
+CFdEventLoop->CEventFd: create
+CFdEventLoop->CNotifyFdWatch: create
+CFdEventLoop->CNotifyFdWatch: descriptor
+CFdEventLoop->CFdEventLoop: addWatch
+CFdEventLoop->CFdEventLoop: registerWatch
+CFdEventLoop->CNotifyFdWatch: enable
+CFdEventLoop<-CNotifyFdWatch: enableWatch
+
+deactivate CBaseWorker
+CBaseWorker->CBaseThread: start
+deactivate CBaseWorker
+
+|||
+CBaseWorker<-CBaseThread: run
+activate CBaseWorker
+CBaseWorker->CFdEventLoop: dispatch
+CFdEventLoop->CBaseEventLoop: getMostRecentTime
+CBaseWorker<-CFdEventLoop: jobQueued
+CBaseWorker<-CFdEventLoop: processJobQueue
+note right:?
+CFdEventLoop->CBaseEventLoop: processTimers
+deactivate CBaseWorker
+
+
+@enduml

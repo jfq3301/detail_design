@@ -37,7 +37,15 @@ deactivate CBaseWorker
 CBaseWorker<-CBaseThread: run
 activate CBaseWorker
 CBaseWorker->CFdEventLoop: dispatch
+CFdEventLoop->CFdEventLoop: buildFdArray
 CFdEventLoop->CBaseEventLoop: getMostRecentTime
+CFdEventLoop->CFdEventLoop: poll
+alt ret == 0
+CFdEventLoop->CFdEventLoop: processTimers
+else ret > 0
+CFdEventLoop->CFdEventLoop: processWatches
+end alt
+
 CBaseWorker<-CFdEventLoop: jobQueued
 CBaseWorker<-CFdEventLoop: processJobQueue
 note right:?

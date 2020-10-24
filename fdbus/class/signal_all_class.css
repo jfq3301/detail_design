@@ -1,0 +1,25 @@
+@startuml
+
+/'
+ ' @brief fdbus class.
+ ' @author jfq3301@163.com
+ ' @date 2020.10.15
+ '/
+
+'ClassA <-- ClassB:关联
+'ClassA <.. ClassB : 依赖
+'ClassA o-- ClassB:聚集
+'ClassA <|-- ClassB:泛化
+'ClassA <|.. ClassB:实现
+
+
+CSysFdWatch <|-- CBaseFdWatch
+CBaseThread <|-- CBaseWorker
+
+
+
+
+
+
+
+@enduml

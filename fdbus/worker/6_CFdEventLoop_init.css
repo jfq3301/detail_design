@@ -1,0 +1,25 @@
+@startuml
+
+/'
+ ' @brief CFdEventLoop init.
+ ' @author jfq3301@163.com
+ ' @date 2020.10.16
+ '/
+
+participant CFdEventLoop
+participant CEventFd
+participant CNotifyFdWatch
+
+CFdEventLoop->CFdEventLoop: init
+CFdEventLoop->CEventFd: create
+note right: return pipe read fd
+CFdEventLoop->CNotifyFdWatch: create
+CFdEventLoop->CNotifyFdWatch: descriptor
+CFdEventLoop->CFdEventLoop: addWatch
+CFdEventLoop->CFdEventLoop: registerWatch
+CFdEventLoop->CNotifyFdWatch: enable
+CFdEventLoop<-CNotifyFdWatch: enableWatch
+
+
+
+@enduml

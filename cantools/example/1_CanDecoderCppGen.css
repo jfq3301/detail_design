@@ -1,0 +1,23 @@
+@startuml
+
+/'
+ ' @brief can tools cpp generate.
+ ' @author jfq3301@163.com
+ ' @date 2020.10.2
+ '/
+
+participant build
+participant CanDecoderCppGen
+participant CppCodeGenerator
+participant CppDefine
+
+
+build->CanDecoderCppGen: CanDecoderCppGen
+CanDecoderCppGen->CanDecoderCppGen: HeadLineCode_CanMatrixMap
+CanDecoderCppGen->CppCodeGenerator: CppCodeGenerator
+CanDecoderCppGen->CppCodeGenerator: AddFileTiTle
+CanDecoderCppGen->CppDefine: CppDefine
+CanDecoderCppGen->CppDefine: CppDefine
+
+
+@enduml

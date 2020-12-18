@@ -1,0 +1,46 @@
+@startuml
+
+/'
+ ' @brief apollo auto 3.0, canbus::OnControlCommand
+ ' @author jfq
+ ' @date 2020.12.7
+ '/
+
+participant canbus
+participant VehicleController
+participant LincolnController
+participant CanSender
+participant CanSender_thread
+participant SenderMessage
+participant ProtocolData
+participant Brake60
+
+canbus->canbus: OnControlCommand
+activate canbus
+canbus->VehicleController: Update
+VehicleController->LincolnController: Brake
+LincolnController->Brake60: set_pedal
+
+|||
+canbus->CanSender: Update
+note right: ChassisDetail
+loop
+CanSender->SenderMessage: Update
+SenderMessage->ProtocolData: UpdateData
+note over LincolnController
+LincolnController::Init()
+can_sender_->AddMessage(Brake60::ID, brake_60_, false);
+end note
+ProtocolData->Brake60: UpdateData
+SenderMessage->SenderMessage: copy can data
+note right: can_frame_to_send_ = can_frame_to_update_;
+end loop
+
+loop
+CanSender_thread->CanSender_thread: SendSingleFrame
+note right: 调用canclient发送出去
+CanSender_thread->CanSender_thread: sleep 5ms
+end loop
+deactivate canbus
+
+@enduml

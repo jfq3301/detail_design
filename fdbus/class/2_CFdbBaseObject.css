@@ -1,9 +1,9 @@
 @startuml
 
 /'
- ' @brief fdbus class.
+ ' @brief fdbus CFdbBaseObject class.
  ' @author jfq3301@163.com
- ' @date 2020.10.15
+ ' @date 2020.11.16
  '/
 
 'ClassA <-- ClassB:关联
@@ -13,13 +13,10 @@
 'ClassA <|.. ClassB:实现
 
 
-CSysFdWatch <|-- CBaseFdWatch
+CFdbBaseObject <|-- CBaseEndpoint
+CSysFdWatch <|-- CNotifyFdWatch
 CBaseThread <|-- CBaseWorker
-
-
-
-
-
-
+CBaseEventLoop <|-- CFdEventLoop
+CBaseWorker o-- CFdEventLoop
 
 @enduml

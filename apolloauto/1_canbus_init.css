@@ -1,0 +1,38 @@
+@startuml
+
+/'
+ ' @brief apollo auto 3.0, canbus::Init
+ ' @author jfq
+ ' @date 2020.12.7
+ '/
+
+participant canbus
+participant AdapterManager
+participant CanClientFactory
+participant VehicleFactory
+participant CanSender
+participant CanReceiver
+participant ChassisDetail
+participant MessageManager
+participant VehicleController
+
+
+canbus->canbus: Init
+activate canbus
+canbus->AdapterManager: Init
+canbus->canbus: GetProtoFromFile
+note right: ?
+canbus->CanClientFactory: RegisterCanClients
+canbus->CanClientFactory: CreateCANClient
+
+canbus->VehicleFactory: RegisterVehicleFactory
+canbus->VehicleFactory: CreateVehicle
+canbus->VehicleFactory: CreateMessageManager
+canbus->CanSender: Init
+canbus->CanReceiver: Init
+
+
+deactivate canbus
+
+
+@enduml

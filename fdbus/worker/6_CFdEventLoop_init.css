@@ -16,9 +16,15 @@ note right: return pipe read fd
 CFdEventLoop->CNotifyFdWatch: create
 CFdEventLoop->CNotifyFdWatch: descriptor
 CFdEventLoop->CFdEventLoop: addWatch
+activate CFdEventLoop
 CFdEventLoop->CFdEventLoop: registerWatch
+activate CFdEventLoop
+CFdEventLoop->CFdEventLoop: addWatchToList
+deactivate CFdEventLoop
+CFdEventLoop->CNotifyFdWatch: eventloop
 CFdEventLoop->CNotifyFdWatch: enable
 CFdEventLoop<-CNotifyFdWatch: enableWatch
+deactivate CFdEventLoop
 
 
 

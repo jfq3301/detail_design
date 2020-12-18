@@ -1,0 +1,21 @@
+@startuml
+
+/'
+ ' @brief fdbus client connect.
+ ' @author jfq3301@163.com
+ ' @date 2020.11.16
+ '/
+
+actor client
+participant CBaseClient
+participant CBaseEndpoint
+participant CFdbBaseObject
+participant CFdbMessage
+participant CFdbContext
+
+
+client->CBaseClient: connect
+CBaseClient->CFdbContext: sendSyncEndeavor
+
+
+@enduml

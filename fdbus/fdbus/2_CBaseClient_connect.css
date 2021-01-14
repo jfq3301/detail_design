@@ -8,14 +8,32 @@
 
 actor client
 participant CBaseClient
-participant CBaseEndpoint
-participant CFdbBaseObject
-participant CFdbMessage
 participant CFdbContext
-
+participant CIntraNameProxy
+participant CClientSocket
+participant CClientSocketImp
+participant CFdbSession
 
 client->CBaseClient: connect
 CBaseClient->CFdbContext: sendSyncEndeavor
-
+CBaseClient<-CFdbContext: cbConnect
+CBaseClient->CBaseClient: doConnect
+note right: svc://org.fdbus.xtest-server
+CBaseClient->CBaseClient: requestServiceAddress
+CBaseClient->CIntraNameProxy: addServiceListener
+note left: NTF_SERVICE_ONLINE
+|||
+CIntraNameProxy->CIntraNameProxy: onBroadcast
+CIntraNameProxy->CIntraNameProxy: processClientOnline
+CBaseClient<-CIntraNameProxy: doConnect
+note right: ipc:///tmp/fdb-ipc0
+CBaseClient->CClientSocketImp: createClientSocket
+CBaseClient->CBaseClient: allocateEntityId
+CBaseClient->CClientSocket: connect
+CClientSocket->CClientSocketImp: connect
+CClientSocket->CFdbSession: new CFdbSession
+CBaseClient->CFdbContext: registerSession
+CBaseClient->CFdbSession: attach
+CBaseClient->CBaseClient: addConnectedSession
 
 @enduml

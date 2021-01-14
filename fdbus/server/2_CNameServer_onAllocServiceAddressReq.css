@@ -1,0 +1,25 @@
+@startuml
+
+/'
+ ' @brief fdbus onAllocServiceAddressReq.
+ ' @author jfq3301@163.com
+ ' @date 2020.12.29
+ '/
+
+
+participant CXServer
+participant CNameServer
+participant CHostProxy
+
+
+CXServer->CNameServer: REQ_ALLOC_SERVICE_ADDRESS
+CNameServer->CNameServer: onAllocServiceAddressReq
+alt exist svc_name
+CXServer<-CNameServer: FDB_ST_ALREADY_EXIST
+else
+CNameServer->CNameServer: addServiceAddress
+CXServer->CNameServer: reply
+end alt
+
+
+@enduml

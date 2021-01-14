@@ -1,0 +1,27 @@
+@startuml
+
+/'
+ ' @brief onBroadcast callback.
+ ' @author jfq3301@163.com
+ ' @date 22021.1.14
+ '/
+
+participant CBaseClient
+participant CBaseWorker
+participant CFdbBaseObject
+participant CFdbSession
+participant CFdbContext
+
+CFdbContext->CFdbSession: onInput
+CFdbSession->CFdbSession: doBroadcast
+note left: FDB_MT_BROADCAST
+CFdbBaseObject<-CFdbSession: doBroadcast
+CFdbBaseObject->CFdbBaseObject: migrateOnSubscribeToWorker
+alt mWorker is not null
+CBaseWorker<-CFdbBaseObject: sendAsync
+note right: send to mWorker
+else
+CBaseClient<-CFdbBaseObject: onBroadcast
+end alt
+
+@enduml

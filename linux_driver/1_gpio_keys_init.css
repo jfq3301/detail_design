@@ -1,0 +1,37 @@
+@startuml
+
+/'
+ ' @brief gpio keys driver.
+ ' @author jfq3301@163.com
+ ' @date 2021.9.20
+ '/
+
+actor user
+participant gpio_keys
+participant platform
+participant driver
+participant bus
+
+' gpio_keys: drivers/input/keyboard/gpio_keys.c
+' platform: drivers/base/platform.c
+' driver: drivers/base/driver.c
+' bus: drivers/base/bus.c
+
+
+user->user: insmod gpio_keys.ko
+user->gpio_keys: gpio_keys_init
+gpio_keys->platform: platform_driver_register
+platform->platform: set driver.bus platform_bus_type
+platform->platform: set probe function pointer
+platform->driver: driver_register
+driver->driver: driver_find
+note left: name is gpio-keys, bus name is platform
+driver->bus: bus_add_driver
+note right: ?
+driver->driver: driver_add_groups
+platform<--driver: return
+gpio_keys<--platform: return
+user<--gpio_keys: return
+
+
+@enduml

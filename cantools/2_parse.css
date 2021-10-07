@@ -1,0 +1,28 @@
+@startuml
+
+/'
+ ' @brief textparse parse function.
+ ' @author jfq3301@163.com
+ ' @date 2021.10.7
+ '/
+
+participant dbc
+participant Parser
+participant textparser.Parser
+participant Grammar
+
+
+' database = cantools.db.load_file(MOTOHAWK_PATH)
+' https://pypi.org/project/textparser/
+' class Parser(textparser.Parser):
+
+dbc->textparser.Parser: parse
+Parser<-textparser.Parser: tokenize
+Parser<-textparser.Parser: grammar
+textparser.Parser->Grammar: parse
+
+textparser.Parser<--Grammar: return
+dbc<--textparser.Parser: return
+
+
+@enduml

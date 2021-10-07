@@ -10,6 +10,8 @@ participant hello_world
 participant database__init__
 participant database
 participant dbc
+participant Parser
+
 
 ' database = cantools.db.load_file(MOTOHAWK_PATH)
 ' https://pypi.org/project/textparser/
@@ -21,7 +23,11 @@ database__init__->database__init__: load
 database__init__->database__init__: load_string
 database__init__->database: add_dbc_string
 database->dbc: load_string
-
-
+dbc->Parser: parse
+note left: return token
+dbc<--Parser: return
+database<--dbc: return
+database__init__<--database: return
+hello_world<--database__init__: return
 
 @enduml

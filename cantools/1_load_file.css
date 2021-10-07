@@ -1,0 +1,27 @@
+@startuml
+
+/'
+ ' @brief cantools load_file.
+ ' @author jfq3301@163.com
+ ' @date 2021.10.6
+ '/
+
+participant hello_world
+participant database__init__
+participant database
+participant dbc
+
+' database = cantools.db.load_file(MOTOHAWK_PATH)
+' https://pypi.org/project/textparser/
+
+hello_world->database__init__: load_file
+database__init__->database__init__: _resolve_database_format_and_encoding
+database__init__->database__init__: fopen
+database__init__->database__init__: load
+database__init__->database__init__: load_string
+database__init__->database: add_dbc_string
+database->dbc: load_string
+
+
+
+@enduml

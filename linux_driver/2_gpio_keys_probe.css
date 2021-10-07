@@ -1,0 +1,31 @@
+@startuml
+
+/'
+ ' @brief gpio keys driver probe.
+ '        it will be called by gpio_keys_init.
+ ' @author jfq3301@163.com
+ ' @date 2021.9.20
+ '/
+
+actor user
+participant gpio_keys
+participant platform
+participant driver
+participant bus
+
+' gpio_keys: drivers/input/keyboard/gpio_keys.c
+' platform: drivers/base/platform.c
+' driver: drivers/base/driver.c
+' bus: drivers/base/bus.c
+
+' bus_add_driver
+' ->driver_attach
+''    ->__driver_attach
+''      ->driver_match_device
+
+gpio_keys->gpio_keys: gpio_keys_probe
+
+
+
+
+@enduml
